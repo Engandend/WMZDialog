@@ -28,7 +28,7 @@
         }else{
             self.titleLabel.text = param.wTitle;
         }
-        self.titleLabel.textAlignment = param.wTextAlignment;
+//        self.titleLabel.textAlignment = param.wTextAlignment;
 
         self.textLabel.font = [UIFont systemFontOfSize:param.wMessageFont];
         self.textLabel.textColor = param.wMessageColor;
