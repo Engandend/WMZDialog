@@ -54,6 +54,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (instancetype)shareInstance;
 
+
++ (UIWindow *)managerWindow;
++ (CGFloat)managerStatusHeight;
++ (CGFloat)managerStatusNavHeight;
++ (CGFloat)managerTabbarHeight;
++ (UIEdgeInsets)managerSafeInsets;
+
 @end
 
 NS_ASSUME_NONNULL_END

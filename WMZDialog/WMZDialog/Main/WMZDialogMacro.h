@@ -27,30 +27,7 @@ return self;                                                                    
 /// window
 #define  DialogWindow \
 ({\
-UIWindow *window = nil; \
-if (@available(iOS 13.0, *)) \
-{ \
-    for (UIWindowScene* windowScene in [UIApplication sharedApplication].connectedScenes) { \
-        if (windowScene.activationState == UISceneActivationStateForegroundActive) \
-        { \
-            for (UIWindow *currentWindow in windowScene.windows)\
-            { \
-                if (currentWindow.isKeyWindow)\
-                { \
-                    window = currentWindow; \
-                    break; \
-                }\
-            }\
-        }\
-    }\
-    if(!window){  \
-        window =  [UIApplication sharedApplication].keyWindow; \
-    }\
-}\
-else \
-{ \
-    window =  [UIApplication sharedApplication].keyWindow; \
-}\
+UIWindow *window = WMZDialogManage.managerWindow; \
 (window); \
 })\
 
@@ -82,7 +59,7 @@ Dialog() \
 #define DialogIsIphoneX ({\
 BOOL isPhoneX = NO;\
 if (@available(iOS 11.0, *)) {\
-if ([[[UIApplication sharedApplication] delegate] window].safeAreaInsets.bottom > 0.0) {\
+if (DialogWindow.safeAreaInsets.bottom > 0.0) {\
 isPhoneX = YES;\
 }\
 }\
@@ -115,10 +92,10 @@ isPhoneX;\
 
 #define DialogScreenH [UIScreen mainScreen].bounds.size.height
 #define DialogScreenW  [UIScreen mainScreen].bounds.size.width
-#define DialogNaviH (([[UIApplication sharedApplication] statusBarFrame].size.height) + 44)
-#define DialogStatusH [[UIApplication sharedApplication] statusBarFrame].size.height
-#define DialogTabBarHeight (DialogIsIphoneX ? (49.f+34.f) : 49.f)
-#define DialogSafeBottomHeight (DialogIsIphoneX ? 34.0f : 0)
+#define DialogNaviH (WMZDialogManage.managerStatusNavHeight)
+#define DialogStatusH WMZDialogManage.managerStatusHeight
+#define DialogTabBarHeight WMZDialogManage.managerTabbarHeight
+#define DialogSafeBottomHeight (WMZDialogManage.managerSafeInsets.bottom)
 #define DialogRealW(A) (A/2.0)
 #define DialogColor(rgbValue) [UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 green:((float)((rgbValue & 0xFF00) >> 8))/255.0 blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 #define DialogK1px (1 / UIScreen.mainScreen.scale)

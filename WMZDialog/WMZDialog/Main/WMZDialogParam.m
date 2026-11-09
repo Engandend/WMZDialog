@@ -148,7 +148,7 @@ DialogCalanderLimitTypeKey const DialogCalanderLimitCloseScroll = @"WMZDialogCal
             if (self.wWidth == DialogSize.width) self.wWidth = left ? DialogScreenH : DialogScreenW;
             if (self.wHeight == DialogSize.height) self.wHeight = DialogScreenH - DialogNaviH;
             if (self.wAnimationDurtion == 0.5f)  self.wAnimationDurtion = 0.3;
-            self.wHeight = MIN(DialogScreenH - [[UIApplication sharedApplication] statusBarFrame].size.height, self.wHeight);
+            self.wHeight = MIN(DialogScreenH - DialogStatusH, self.wHeight);
         }
             break;
         case DialogTypeMyView:{

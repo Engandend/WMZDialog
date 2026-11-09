@@ -257,4 +257,89 @@ static WMZDialogManage* dialogManage = nil;
     return  WMZDialogManage.shareInstance;
 }
 
+#pragma mark - helper
++ (UIWindow *)managerWindow {
+    NSAssert([NSThread isMainThread], @"UIWindow must be accessed on the main thread");
+
+    if (@available(iOS 13.0, *)) {
+        NSArray<NSNumber *> *states = @[
+            @(UISceneActivationStateForegroundActive),
+            @(UISceneActivationStateForegroundInactive)
+        ];
+
+        for (NSNumber *state in states) {
+            for (UIScene *scene in UIApplication.sharedApplication.connectedScenes) {
+                if (![scene isKindOfClass:UIWindowScene.class]) {
+                    continue;
+                }
+
+                if (scene.activationState != state.integerValue) {
+                    continue;
+                }
+
+                UIWindow *window = [self windowForScene:(UIWindowScene *)scene];
+                if (window) {
+                    return window;
+                }
+            }
+        }
+
+        return nil;
+    }
+
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+    return UIApplication.sharedApplication.keyWindow;
+#pragma clang diagnostic pop
+}
+
+
++ (UIWindow *)windowForScene:(UIWindowScene *)windowScene API_AVAILABLE(ios(13.0)) {
+    if (!windowScene) {
+        return nil;
+    }
+
+    for (UIWindow *window in windowScene.windows) {
+        if (window.isKeyWindow) {
+            return window;
+        }
+    }
+
+    for (UIWindow *window in windowScene.windows) {
+        if (!window.hidden &&
+            window.alpha > 0.0 &&
+            window.windowLevel == UIWindowLevelNormal &&
+            window.rootViewController) {
+            return window;
+        }
+    }
+
+    return nil;
+}
+
++ (CGFloat)managerStatusHeight {
+    float statusBarHeight = 0;
+    if (@available(iOS 13.0, *)) {
+        UIStatusBarManager *statusBarManager = self.managerWindow.windowScene.statusBarManager;
+        statusBarHeight = statusBarManager.statusBarFrame.size.height;
+    }
+    return statusBarHeight;
+}
+
++ (CGFloat)managerStatusNavHeight {
+    return self.managerStatusHeight + 44.0;
+}
+
++ (CGFloat)managerTabbarHeight {
+    CGFloat height = (49.0f + self.managerSafeInsets.bottom);
+    return height;
+}
+
++ (UIEdgeInsets)managerSafeInsets {
+    UIEdgeInsets insets = UIEdgeInsetsZero;
+    if (@available(iOS 13.0, *)) {
+        insets = self.managerWindow.safeAreaInsets;
+    }
+    return insets;
+}
 @end

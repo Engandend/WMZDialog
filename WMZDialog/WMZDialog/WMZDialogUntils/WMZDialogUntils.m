@@ -11,7 +11,7 @@
 @implementation WMZDialogUntils
 
 + (UIViewController *)getCurrentVC{
-    UIViewController *rootViewController = [UIApplication sharedApplication].keyWindow.rootViewController;
+    UIViewController *rootViewController = DialogWindow.rootViewController;
     UIViewController *currentVC = [self getCurrentVCFrom:rootViewController];
     return currentVC;
 }
